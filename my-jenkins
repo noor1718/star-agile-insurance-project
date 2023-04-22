@@ -12,18 +12,39 @@ pipeline {
          git  'https://github.com/Fatima-Ishrath021/star-agile-insurance-project.git'
 	 }
        }
-  stage('Building the Application'){
+    stage('Build the Application'){
         steps {
 	echo "Cleaning... Compiling...Testing... Packaging..."
 	sh 'mvn clean package'
             }
           }   
-  
-  stage('Publish Reports') {
+     stage('Publish Reports') {
         steps {
-	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/var/lib/jenkins/workspace/insure-me/target', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/var/lib/jenkins/workspace/insurancme', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
 	}
-	}
-  
+	}  
+    stage('Docker Image Creation') {
+        steps {
+	sh 'docker build -t noor1718/insurance:latest .'
+        }
+      }
+    stage('Docker Login') {
+        steps {withCredentials([usernamePassword(credentialsId: 'docker-login', passwordVariable: 'dockerhubpsswd', usernameVariable: 'dockerhubuser')]) {
+     sh "docker login -u ${env.dockerhubuser} -p ${env.dockerhubpsswd}"
+    			 }
+   			}
+  			}
+    stage('Docker Push') 
+        { steps {
+            sh "docker push noor1718/insurance "
+        }}
+    stage ('deploying ansible-playbook')
+        {steps {
+        ansiblePlaybook become: true, credentialsId: 'ansible-login', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'deploy-playbook.yml'
+        }
+        }
+    
+    
+    
   }
 }
