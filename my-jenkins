@@ -12,3 +12,10 @@ pipeline {
          git  'https://github.com/noor1718/star-agile-insurance-project.git'
 	 }
        }
+       
+       
+       
+       
+       
+       }
+       }
