@@ -34,6 +34,10 @@ pipeline {
     			 }
    			}
 			}
+			stage('Docker Push') 
+        { steps {
+            sh "docker push noor1718/insurance "
+        }}
         
 			
 			
