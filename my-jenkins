@@ -33,6 +33,7 @@ pipeline {
         sh "docker login -u ${env.dockerhubuser} -p ${env.dockerhubpsswd}"
     			 }
    			}
+			}
         
 			
 			
