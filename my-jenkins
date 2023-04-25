@@ -33,9 +33,9 @@ pipeline {
      sh "docker login -u ${env.dockerhubuser} -p ${env.dockerhubpsswd}"
     			 }
    			}
-       stage('Docker Push') 
+      stage('Docker Push') 
         { steps {
-       sh "docker push noor1718/insurance1:latest "
+     sh "docker push noor1718/insurance1:latest "
         }
 	}
 	}
